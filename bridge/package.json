@@ -1,0 +1,13 @@
+{
+  "name": "spatial-coding-conductor-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Optional laptop sidecar for the Spatial Coding Conductor Lens",
+  "main": "ws-server.js",
+  "scripts": {
+    "start": "node ws-server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

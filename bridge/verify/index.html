@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Conductor verify</title>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, sans-serif; background: #111; color: #eee; margin: 24px; }
+    h1 { font-size: 20px; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #333; margin-left: 8px; }
+    .live { background: #14532d; }
+    .card { background: #1c1c1c; border: 1px solid #333; border-radius: 12px; padding: 12px 16px; margin: 12px 0; }
+    .status { font-weight: 700; }
+    .msg { margin: 6px 0; padding: 6px 8px; background: #222; border-radius: 8px; }
+    .user { border-left: 3px solid #60a5fa; }
+    .assistant { border-left: 3px solid #a3e635; }
+    .tool { border-left: 3px solid #f59e0b; }
+    pre { white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Spatial Coding Conductor <span id="mode" class="badge">connecting</span></h1>
+  <p>Same frozen contract the Lens speaks. Default Preview does not need this page.</p>
+  <div id="cards"></div>
+  <script>
+    const cards = document.getElementById("cards");
+    const mode = document.getElementById("mode");
+    const sessions = new Map();
+    const proto = location.protocol === "https:" ? "wss" : "ws";
+    const socket = new WebSocket(proto + "://" + location.host);
+
+    function render() {
+      cards.innerHTML = "";
+      sessions.forEach((session) => {
+        const el = document.createElement("div");
+        el.className = "card";
+        const messages = (session.messages || []).map((msg) => {
+          return '<div class="msg ' + msg.role + '"><strong>' + msg.role + '</strong> ' +
+            (msg.text || "") + (msg.toolStatus ? " · " + msg.toolStatus : "") + "</div>";
+        }).join("");
+        el.innerHTML = "<div><strong>" + session.label + "</strong> · " + session.repo +
+          ' · <span class="status">' + (session.statusLabel || session.status) + "</span></div>" +
+          "<div>" + (session.activity || "") + "</div>" + messages;
+        cards.appendChild(el);
+      });
+    }
+
+    socket.addEventListener("open", () => {
+      mode.textContent = "Live";
+      mode.classList.add("live");
+      socket.send(JSON.stringify({ type: "hello", protocolVersion: "1.0", role: "verify" }));
+    });
+    socket.addEventListener("close", () => {
+      mode.textContent = "Offline";
+      mode.classList.remove("live");
+    });
+    socket.addEventListener("message", (event) => {
+      const msg = JSON.parse(event.data);
+      if (msg.type === "session_snapshot") {
+        sessions.clear();
+        (msg.sessions || []).forEach((session) => sessions.set(session.id, session));
+      } else if (msg.type === "session_upsert") {
+        sessions.set(msg.session.id, msg.session);
+      } else if (msg.type === "session_remove") {
+        sessions.delete(msg.sessionId);
+      } else if (msg.type === "output_chunk" && msg.isFinal) {
+        const session = sessions.get(msg.sessionId);
+        if (session) {
+          session.messages = session.messages || [];
+          session.messages.push({ role: "assistant", text: msg.text });
+        }
+      }
+      render();
+    });
+  </script>
+</body>
+</html>

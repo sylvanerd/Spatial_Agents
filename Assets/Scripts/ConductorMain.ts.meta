@@ -1,0 +1,62 @@
+- !<AssetImportMetadata/694ae523-889b-424d-8deb-8bfd3b733c98>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 4bf4f970-0c6f-4c99-9969-2212c4e49b66
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 4bf4f970-0c6f-4c99-9969-2212c4e49b66
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> e2033996-da86-479c-844b-94264d98092a
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/e2033996-da86-479c-844b-94264d98092a>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: f23b5846-998f-4006-a45c-a3b17323b9fc
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    avatarMaterial: false
+    avatarMeshes: false
+    cameraObject: false
+    glowMaterial: false
+    orbMesh: false
+    wsUrl: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - wsUrl: "ws://127.0.0.1:8080"
+      avatarMeshes: !<reference.RenderMesh[]>
+        []
+      avatarMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      glowMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      orbMesh: !<reference.RenderMesh> 00000000-0000-0000-0000-000000000000
+      cameraObject: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input string wsUrl = "ws://127.0.0.1:8080" {"hint":"ws://127.0.0.1:8080 — used only when Live is toggled"}'
+    - "// @input Asset.RenderMesh[] avatarMeshes = {}"
+    - // @input Asset.Material avatarMaterial
+    - // @input Asset.Material glowMaterial
+    - // @input Asset.RenderMesh orbMesh
+    - // @input SceneObject cameraObject

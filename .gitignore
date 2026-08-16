@@ -9,10 +9,11 @@ PluginsUserPreferences/**
 Support/**
 BackUp/**
 Workspaces/**
-.vscode/
+.vscode/**
 /jsconfig.json
 /tsconfig.json
 .DS_Store
+/spk_debug_key.pem
 *.lock
 
 # Shipped by Lens Studio
@@ -27,3 +28,5 @@ Workspaces/**
 .virtual-scene.json
 tempAssetGen/
 .icon_tmp/
+.cursor/
+bridge/node_modules/
