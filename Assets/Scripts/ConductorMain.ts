@@ -7,6 +7,8 @@ import {SessionSpawnLayout} from "./SessionSpawnLayout"
 import {ConductorAudio} from "./ConductorAudio"
 import {SessionBlockUI} from "./SessionBlockUI"
 import {ConductorHudUI} from "./ConductorHudUI"
+import {GroupBarUI} from "./GroupBarUI"
+import {ProjectBasket} from "./ProjectBasket"
 
 @component
 export class ConductorMain extends BaseScriptComponent {
@@ -41,10 +43,14 @@ export class ConductorMain extends BaseScriptComponent {
   private audio: ConductorAudio = new ConductorAudio()
   private blocks: Map<string, SessionBlockUI> = new Map()
   private hud: ConductorHudUI | null = null
+  private groupBar: GroupBarUI | null = null
+  private uiCluster: SceneObject | null = null
+  private sessionGroup: SceneObject | null = null
+  private basket: ProjectBasket | null = null
   private liveRequested: boolean = false
 
   onAwake(): void {
-    this.store.hydrate(FIXTURE_STATE.sessions)
+    this.store.hydrateFixture(FIXTURE_STATE)
     this.voice = new VoiceCommandGate({
       onListening: (sessionId, partial) => {
         const block = this.blocks.get(sessionId)
@@ -108,8 +114,9 @@ export class ConductorMain extends BaseScriptComponent {
       onClose: () => {
         this.store.setLive(false)
         if (!this.liveRequested) {
-          this.store.hydrate(FIXTURE_STATE.sessions)
+          this.store.hydrateFixture(FIXTURE_STATE)
           this.rebuildBlocks()
+          this.refreshBasket()
         }
         this.refreshHud()
       },
@@ -154,23 +161,93 @@ export class ConductorMain extends BaseScriptComponent {
       },
     })
 
+    this.spawnCluster()
     this.spawnHud()
+    this.spawnGroupBar()
+    this.spawnBasket()
     this.rebuildBlocks()
     this.createEvent("UpdateEvent").bind(() => {
       if (this.gaze) {
         this.gaze.update()
       }
+      if (this.basket) {
+        this.basket.update(getDeltaTime())
+      }
     })
+  }
+
+  private spawnCluster(): void {
+    this.uiCluster = global.scene.createSceneObject("UICluster")
+    this.uiCluster.setParent(this.sceneObject)
+    this.uiCluster.getTransform().setLocalPosition(new vec3(0, 0, 0))
+  }
+
+  private clusterParent(): SceneObject {
+    return this.uiCluster || this.sceneObject
   }
 
   private spawnHud(): void {
     const hudObj = global.scene.createSceneObject("ConductorHUD")
-    hudObj.setParent(this.sceneObject)
+    hudObj.setParent(this.clusterParent())
     hudObj.getTransform().setLocalPosition(new vec3(0, 14, -84))
     this.hud = hudObj.createComponent(ConductorHudUI.getTypeName()) as ConductorHudUI
     this.hud.bindToggle(() => this.toggleLive())
     this.hud.bindAdd(() => this.addSession())
     this.refreshHud()
+  }
+
+  private spawnGroupBar(): void {
+    this.sessionGroup = global.scene.createSceneObject("SessionGroup")
+    this.sessionGroup.setParent(this.clusterParent())
+    this.sessionGroup.getTransform().setLocalPosition(new vec3(0, 0, 0))
+
+    const bar = global.scene.createSceneObject("GroupBar")
+    bar.setParent(this.clusterParent())
+    bar.getTransform().setLocalPosition(new vec3(0, 19.6, -84))
+    this.groupBar = bar.createComponent(GroupBarUI.getTypeName()) as GroupBarUI
+    this.groupBar.bindGroupRoot(this.clusterParent())
+  }
+
+  private applyGroupParenting(): void {
+    const parent = this.sessionGroup || this.sceneObject
+    this.blocks.forEach((block) => {
+      const so = block.getSceneObject()
+      const worldPos = so.getTransform().getWorldPosition()
+      const worldRot = so.getTransform().getWorldRotation()
+      so.setParent(parent)
+      so.getTransform().setWorldPosition(worldPos)
+      so.getTransform().setWorldRotation(worldRot)
+      block.setGrabRoot(so)
+    })
+  }
+
+  private spawnBasket(): void {
+    this.basket = new ProjectBasket(
+      this.clusterParent(),
+      this.store.listProjects(),
+      this.store.activeProjectId(),
+      this.pickFileMesh(),
+      this.avatarMaterial || this.glowMaterial,
+      (projectId) => this.openProject(projectId),
+    )
+  }
+
+  private openProject(projectId: string): void {
+    if (this.voice) {
+      this.voice.cancel()
+    }
+    if (!this.store.openProject(projectId)) {
+      return
+    }
+    this.rebuildBlocks()
+    this.refreshBasket()
+    this.audio.playSelectTick()
+  }
+
+  private refreshBasket(): void {
+    if (this.basket) {
+      this.basket.setActive(this.store.activeProjectId())
+    }
   }
 
   private rebuildBlocks(): void {
@@ -184,9 +261,10 @@ export class ConductorMain extends BaseScriptComponent {
 
     const layout = new SessionSpawnLayout()
     const sessions = this.store.list()
+    const spawnParent = this.sessionGroup || this.sceneObject
     sessions.forEach((session, index) => {
       const so = global.scene.createSceneObject("Session-" + session.id)
-      so.setParent(this.sceneObject)
+      so.setParent(spawnParent)
       so.getTransform().setLocalPosition(layout.positionForIndex(index, sessions.length))
       so.getTransform().setLocalRotation(layout.rotationForIndex(index))
       const block = so.createComponent(SessionBlockUI.getTypeName()) as SessionBlockUI
@@ -196,6 +274,7 @@ export class ConductorMain extends BaseScriptComponent {
         this.gaze.register(session.id, so)
       }
     })
+    this.applyGroupParenting()
     this.refreshHud()
   }
 
@@ -309,16 +388,24 @@ export class ConductorMain extends BaseScriptComponent {
     } else if (this.connection) {
       this.connection.disconnect()
       this.store.setLive(false)
-      this.store.hydrate(FIXTURE_STATE.sessions)
+      this.store.hydrateFixture(FIXTURE_STATE)
       this.rebuildBlocks()
+      this.refreshBasket()
     }
     this.refreshHud()
   }
 
   private refreshHud(): void {
     if (this.hud) {
-      this.hud.setMode(this.store.isLive(), this.store.list().length)
+      this.hud.setMode(this.store.isLive(), this.store.list().length, this.store.activeProjectLabel())
     }
+  }
+
+  private pickFileMesh(): RenderMesh | null {
+    if (this.avatarMeshes && this.avatarMeshes.length > 0) {
+      return this.avatarMeshes[0]
+    }
+    return this.pickOrbMesh()
   }
 
   private pickOrbMesh(): RenderMesh | null {

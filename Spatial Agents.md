@@ -47,7 +47,7 @@ Not in this version: other people in the same room, a store listing, or a publis
 4. Gaze or hover the card → it expands **down from the same top handle**. Indicator hides. Conversation + composer show.
 5. Look away (cursor leaves the card in Preview) → it auto-collapses, unless you are talking or grabbing the orb.
 6. Talk (Mic / ASR) or tap a suggested command → Send. The thread keeps previous messages and appends yours, then a reply.
-7. Grab the **orb** to move one session. Grab the thin bar above the HUD to move every agent in the open project together.
+7. Grab the **orb** to move one session. Grab the short bar above the HUD to move the handle, the menu, the cards, and the basket together.
 8. HUD **+** adds a new idle session in the open project. Card **×** removes that session.
 
 Gaze never opens the microphone. Opening a project is not talking to an agent. Mic / double-pinch (device) is the talk gate.
@@ -56,7 +56,7 @@ Gaze never opens the microphone. Opening a project is not talking to an agent. M
 
 ## What you see in Preview today
 
-**Group bar** (above the HUD): a thin unlabeled handle. Grab it to move the open project’s agents together.
+**Group bar** (above the HUD): a short unlabeled handle. Grab it to move the handle, HUD, agent cards, and project basket together.
 
 **HUD:** `Project A` · `Offline mock` · `N sessions` · **+** · `Live`
 
@@ -92,7 +92,7 @@ Gaze never opens the microphone. Opening a project is not talking to an agent. M
 | Double-pinch to talk | Mic |
 | Speak | Laptop ASR, or the command chip |
 | Pinch-drag one session | Grab that card’s orb |
-| Pinch-drag the open project | Grab the unlabeled bar above the HUD |
+| Pinch-drag the whole stack | Grab the short bar above the HUD |
 | Hover a project file | Cursor on the file (it lifts) |
 | Pinch to open a project | Click / pinch the lifted file |
 
@@ -136,7 +136,7 @@ A wearer (or a reviewer in Lens Studio) can:
 - Keep several sessions in view at once and tell working / waiting / done apart
 - Switch projects from the basket and see the HUD + cards become that project
 - Bind a session to a place by moving its orb, then find it again by that place
-- Grab the bar above the HUD and move every agent in the open project together
+- Grab the short bar above the HUD and move the menu, cards, and basket together
 - Expand one card by looking at it and keep it open while the cursor stays on it
 - Send a line and still read the previous conversation
 - Keep spoken input inside the input field

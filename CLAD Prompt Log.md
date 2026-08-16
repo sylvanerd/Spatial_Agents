@@ -4,7 +4,7 @@
 **Conversation:** [Local repo GitHub connection](https://github.com/sylvanerd/Spatial_Agents)  
 **Transcript id:** `f67f305e-f38b-459c-92f2-363dabae33af`  
 **Product:** Spatial Agents — a spatial way of interacting with coding agents  
-**Pushed build:** `39d96ad` on `main` (UI). Prompt log: `d11e454`, then this update.
+**Pushed build:** Preview UI through the project basket + group handle. Prompt log kept in this file.
 
 Each entry is a user prompt (edited only for length) and a short summary of the CLAD reply. Tool traces and screenshots are omitted.
 
@@ -207,3 +207,27 @@ Each entry is a user prompt (edited only for length) and a short summary of the 
 **You:** Output the latest prompt log and update the file on my repo.
 
 **CLAD:** Appended the 21:21–23:44 entries to this file and pushed only `CLAD Prompt Log.md` to `origin/main`.
+
+---
+
+### 23:45 — Product doc to main
+
+**You:** Update the product.md and upload to my repo.
+
+**CLAD:** Pushed `Spatial Agents.md` as `64c64f8`. Two-layer Preview (basket + group bar). No “Spatial Conductor.” Basket/group-bar code was still local.
+
+---
+
+### 23:46 — Short handle, move the whole stack
+
+**You:** Shorten the group toggle bar, it’s too long. Once it’s dragged, the top menu, the handle, and all the UI below it should move together.
+
+**CLAD:** Shortened the handle (~14 cm). Parenting HUD, handle, cards, and basket under `UICluster` so a drag on the bar moves the whole stack. Orb still moves one card.
+
+---
+
+### 23:48 — Push + log
+
+**You:** Push this and update the prompt log again.
+
+**CLAD:** Committed the project basket, group handle, and this log update, then pushed to `origin/main`.

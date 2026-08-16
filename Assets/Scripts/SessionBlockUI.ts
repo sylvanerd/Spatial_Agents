@@ -66,6 +66,7 @@ export class SessionBlockUI extends BaseScriptComponent {
   private ignoreHoverEndUntil: number = 0
   private orbMesh: RenderMesh | null = null
   private glowMat: Material | null = null
+  private grabRoot: SceneObject | null = null
 
   public setup(
     session: ConductorSession,
@@ -83,6 +84,14 @@ export class SessionBlockUI extends BaseScriptComponent {
     this.applyChrome(true)
     this.refresh()
     this.refreshOrb()
+  }
+
+  public setGrabRoot(root: SceneObject): void {
+    this.grabRoot = root
+    const manipulation = this.orb ? this.orb.getManipulation() : null
+    if (manipulation) {
+      manipulation.setManipulateRoot(root.getTransform())
+    }
   }
 
   public setExpanded(expanded: boolean): void {
@@ -440,7 +449,7 @@ export class SessionBlockUI extends BaseScriptComponent {
 
   private ensureInteraction(): void {
     if (this.orb) {
-      this.orb.enableGrab(this.sceneObject)
+      this.orb.enableGrab(this.grabRoot || this.sceneObject)
     }
 
     this.createEvent("OnStartEvent").bind(() => {

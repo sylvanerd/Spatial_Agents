@@ -25,9 +25,17 @@ export interface ConductorSession {
   messages: TranscriptMessage[]
 }
 
+export interface AgentProject {
+  id: string
+  label: string
+  sessions: ConductorSession[]
+}
+
 export interface FixtureState {
   protocolVersion: string
-  hud: {mode: string; sessionCount: number}
+  hud: {mode: string; sessionCount: number; projectLabel?: string}
+  activeProjectId?: string
+  projects?: AgentProject[]
   sessions: ConductorSession[]
 }
 

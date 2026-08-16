@@ -11,7 +11,7 @@ Text WebSocket frames. One JSON object per frame.
 
 ## Bridge → clients
 
-- `session_snapshot` — `{ sessions: Session[] }` full list on connect
+- `session_snapshot` — `{ sessions: Session[], projects?: Project[], activeProjectId?: string }` full list on connect. `sessions` is the open project. `projects` is optional so a later Live adapter can send the basket without a Lens rewrite.
 - `session_upsert` — `{ session: Session }`
 - `session_remove` — `{ sessionId }`
 - `session_status` — `{ sessionId, status, activity?, statusLabel? }`
@@ -30,3 +30,7 @@ Text WebSocket frames. One JSON object per frame.
 ## Session
 
 `id`, `label`, `repo`, `task`, `status`, `statusLabel`, `activity`, `lastOutput`, `updatedAt`, `composerHint`, `commandChip`, `messages`
+
+## Project
+
+`id`, `label`, `sessions: Session[]`

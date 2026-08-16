@@ -5,11 +5,12 @@ import {BackPlate} from "SpectaclesUIKit.lspkg/Scripts/BackPlate"
 import {Button} from "SpectaclesUIKit.lspkg/Scripts/Components/Button/Button"
 import {applyTextRole} from "./ConductorTheme"
 
-const PANEL_W = 34
+const PANEL_W = 44
 const PAD = 1.2
 
 @component
 export class ConductorHudUI extends BaseScriptComponent {
+  private projectText: Text | null = null
   private modeText: Text | null = null
   private countText: Text | null = null
   private onToggle: (() => void) | null = null
@@ -38,7 +39,8 @@ export class ConductorHudUI extends BaseScriptComponent {
       plate.size = new vec2(result.containerWidth, result.containerHeight)
     })
 
-    this.modeText = this.addLabel(content, "Offline mock", 14)
+    this.projectText = this.addLabel(content, "Project A", 11)
+    this.modeText = this.addLabel(content, "Offline mock", 12)
     this.countText = this.addLabel(content, "3 sessions", 9)
     this.addPlus(content)
     this.addToggle(content)
@@ -64,7 +66,10 @@ export class ConductorHudUI extends BaseScriptComponent {
     this.onAdd = fn
   }
 
-  public setMode(live: boolean, count: number): void {
+  public setMode(live: boolean, count: number, projectLabel: string = "Project A"): void {
+    if (this.projectText) {
+      this.projectText.text = projectLabel
+    }
     if (this.modeText) {
       this.modeText.text = live ? "Live" : "Offline mock"
       this.modeText.textFill.color = live
@@ -72,7 +77,7 @@ export class ConductorHudUI extends BaseScriptComponent {
         : new vec4(0.85, 0.86, 0.88, 1)
     }
     if (this.countText) {
-      this.countText.text = count + " sessions"
+      this.countText.text = count === 1 ? "1 session" : count + " sessions"
     }
   }
 
