@@ -3,8 +3,8 @@
 **Session:** 16 August 2026  
 **Conversation:** [Local repo GitHub connection](https://github.com/sylvanerd/Spatial_Agents)  
 **Transcript id:** `f67f305e-f38b-459c-92f2-363dabae33af`  
-**Product:** Spatial Agents / Spatial Coding Conductor  
-**Pushed build:** `39d96ad` on `main`
+**Product:** Spatial Agents — a spatial way of interacting with coding agents  
+**Pushed build:** `39d96ad` on `main` (UI). Prompt log: `d11e454`, then this update.
 
 Each entry is a user prompt (edited only for length) and a short summary of the CLAD reply. Tool traces and screenshots are omitted.
 
@@ -143,3 +143,67 @@ Each entry is a user prompt (edited only for length) and a short summary of the 
 **You:** Write a product.md named Spatial Agents.md for me to approve, then push to main. Also a CLAD prompt log with a summary of your replies along with my prompts.
 
 **CLAD:** Drafted `Spatial Agents.md` and this `CLAD Prompt Log.md`. Waiting for your approval before commit and push.
+
+---
+
+### 21:21 — Prompt log only
+
+**You:** Only push the prompt log to main.
+
+**CLAD:** Committed `d11e454` (“Add the CLAD session prompt log…”) and pushed `CLAD Prompt Log.md` to `origin/main`. Left `Spatial Agents.md` and other local work uncommitted.
+
+---
+
+### 22:19 — Rename the product thesis
+
+**You:** Don’t say “Spatial Conductor.” Say “spatial way of interacting with coding agents.” The pain is many sessions per project and several projects at once. Embodying agents in space lets someone use a memory-palace habit — bind a place to an agent — so work stays organized and talking to agents is more natural.
+
+**CLAD:** Rewrote the local `Spatial Agents.md` problem + thesis around that wording. No “Spatial Conductor.” Did not push (you had not asked to).
+
+---
+
+### 22:37 — 3D project basket
+
+**You:** Add a 3D file-folder UI: Project A, Project B, Project C, Stuff. Today’s interface is Project A. A 3D basket holds the projects. Hand hover/approach makes a file pop up.
+
+**CLAD:** Proposed: hover/approach lifts the file; pinch opens that project and swaps the agent cards. You confirmed that interaction.
+
+---
+
+### 22:44 — Confirm Preview
+
+**You:** Confirm with me what will be shown in Preview?
+
+**CLAD:** Preview will show Project A’s three cards as today, a basket below with four files, HUD with the active project name, hover-lift, pinch-to-open swapping cards. Gaze still does not open the mic.
+
+---
+
+### 22:45 — Build the basket
+
+**You:** Great go.
+
+**CLAD:** Shipped the project layer in Preview: fixture A/B/C/Stuff, `SessionStore.openProject()`, `ProjectBasket` / `ProjectFile` (hover lift, pinch open), HUD project label, cards rebuild for the open project. Verified Project C open → `shader-pass` and `1 session`.
+
+---
+
+### 23:39 — Lower files + group bar
+
+**You:** Move them further down in the preview, and bring the gap closer. Also add a group toggle bar on top of the top menu bar so all the coding agents of the projects can be moved around in groups.
+
+**CLAD:** Dropped the project row lower and packed A/B/C/Stuff tighter. Added a bar above the HUD (`Move as group` · Off/On · Grab group). On = every agent in the open project moves together.
+
+---
+
+### 23:43 — Strip the group bar copy
+
+**You:** Simplify that bar as a horizontal bar. It already signifies its function. No need for UI texts on it.
+
+**CLAD:** Replaced the labeled toggle with a blank horizontal handle above the HUD. Grab the bar to move the open project’s agents together; grab an orb to move one agent.
+
+---
+
+### 23:44 — Update this log
+
+**You:** Output the latest prompt log and update the file on my repo.
+
+**CLAD:** Appended the 21:21–23:44 entries to this file and pushed only `CLAD Prompt Log.md` to `origin/main`.
