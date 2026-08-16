@@ -1,12 +1,16 @@
 # Spatial Agents
 
+## TL;DR
+
+Developers and creators keep many coding-agent sessions open across several projects, and on a laptop those sessions collapse into an indistinguishable pile of terminals and tabs. Spatial Agents gives each session a body: a card you place anywhere in the room, plus a project basket below that holds Project A, B, C, and Stuff — pinch a file and that project’s agents swap into the space around you. You address an agent by **looking** at it and work with it by **speaking**, so gaze answers *which agent* and voice answers *what to do*, and the place you left a card becomes how you remember what it was working on. The cards mirror real sessions on your laptop over a small local bridge, so the laptop stays the source of truth while the room becomes where you organize it.
+
+---
+
 **Product name:** Spatial Agents  
 **What it is:** A spatial way of interacting with coding agents  
 **Platform:** Specs (Spectacles) — Lens Studio 5.23, Device Type Override SPECS 27  
 **Repo:** https://github.com/sylvanerd/Spatial_Agents  
 **Status:** Preview demo — fixture-first, optional laptop bridge. Two memory layers: **projects in a basket**, **agents in space**.
-
-Spatial Agents lets you work with coding agents in space. Each agent is a card you can place, look at, talk to, and find again by where you left it. Projects live in a basket below; the open project’s agents sit in the room.
 
 ---
 
